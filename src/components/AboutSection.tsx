@@ -16,18 +16,10 @@ export default function AboutSection() {
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pt-16 px-6 pb-6">
-                <div className="grid grid-cols-3 gap-4">
-                  {[
-                    { v: "GRX",       l: "Base" },
-                    { v: "MLG · AL",  l: "Escena" },
-                    { v: "GROOVE",    l: "Esencia" },
-                  ].map(({ v, l }) => (
-                    <div key={l}>
-                      <p className="font-display text-sm text-[#c9a84c] tracking-widest">{v}</p>
-                      <p className="text-white/50 text-[10px] tracking-[0.15em] uppercase mt-0.5">{l}</p>
-                    </div>
-                  ))}
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pt-16 pb-6 flex justify-center">
+                <div className="text-center">
+                  <p className="font-display text-sm text-[#c9a84c] tracking-widest">GRX</p>
+                  <p className="text-white/50 text-[10px] tracking-[0.15em] uppercase mt-0.5">Base</p>
                 </div>
               </div>
             </div>
