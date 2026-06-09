@@ -61,7 +61,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {/* Quick-add hover bar */}
         <div className={`absolute inset-x-0 bottom-0 bg-[#0a0a0a]/90 backdrop-blur-sm px-3 py-2.5 flex items-center justify-between gap-3 transition-all duration-300 ${hovered ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}>
-          <SizeSelector sizes={product.sizes} selected={size} onChange={setSize} small />
+          <SizeSelector sizes={product.sizes} selected={size} onChange={setSize} small dark />
           <button onClick={addToCart} className="btn-gold text-[10px] px-3 py-2 flex-shrink-0">
             {added ? "✓" : "Añadir"}
           </button>

@@ -113,7 +113,7 @@ export default function ProductDetail({ product }: { product: Product }) {
               <span className="text-white/30 text-[10px] tracking-[0.2em] uppercase">Talla</span>
               {sizeErr && <span className="text-red-400 text-[10px] tracking-wide">Selecciona una talla</span>}
             </div>
-            <SizeSelector sizes={product.sizes} selected={size} onChange={(s) => { setSize(s); setSizeErr(false); }} />
+            <SizeSelector sizes={product.sizes} selected={size} onChange={(s) => { setSize(s); setSizeErr(false); }} dark />
           </div>
 
           {/* Quantity */}

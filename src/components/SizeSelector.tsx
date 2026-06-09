@@ -5,11 +5,12 @@ interface Props {
   selected: string;
   onChange: (size: string) => void;
   small?: boolean;
+  dark?: boolean; // true = botones sobre fondo oscuro (carrito, hover bar)
 }
 
-export default function SizeSelector({ sizes, selected, onChange, small }: Props) {
+export default function SizeSelector({ sizes, selected, onChange, small, dark }: Props) {
   return (
-    <div className="flex gap-1.5">
+    <div className="flex gap-1.5 flex-wrap">
       {sizes.map((s) => (
         <button
           key={s}
@@ -19,7 +20,9 @@ export default function SizeSelector({ sizes, selected, onChange, small }: Props
           } ${
             selected === s
               ? "border-[#c9a84c] bg-[#c9a84c] text-[#0a0a0a]"
-              : "border-white/15 text-white/50 hover:border-white/40 hover:text-white"
+              : dark
+              ? "border-white/20 text-white/55 hover:border-white/60 hover:text-white"
+              : "border-[#0a0a0a]/20 text-[#0a0a0a]/55 hover:border-[#0a0a0a] hover:text-[#0a0a0a]"
           }`}
         >
           {s}
