@@ -152,7 +152,7 @@ export default function ProductDetail({ product }: { product: Product }) {
           {/* Details table */}
           <div className="border-t border-white/[0.08] pt-6 space-y-4">
             {[
-              { k: "Composición", v: "100% Algodón" },
+              { k: "Composición", v: product.category === "tee" ? "100% Algodón" : "Tela elástica" },
               { k: "Fit",         v: product.category === "tee" ? "Oversize" : "Crop fit" },
               { k: "Envío",       v: "España peninsular · 3-5 días hábiles" },
               { k: "Cambios",     v: "Cambio de talla en 14 días" },

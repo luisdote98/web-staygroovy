@@ -18,8 +18,8 @@ export default function WomenSection() {
               Diseñados para bailar, moverse y formar parte de la noche.
             </p>
             <p className="text-[#0a0a0a]/40 text-sm leading-relaxed mb-8 max-w-md">
-              Crop tops de algodón con gráfica Stay Groovy. Ajuste ceñido, tela
-              suave. Para llevarlos dentro del club y llevarlos al día siguiente.
+              Crop tops de tela elástica con gráfica Stay Groovy. Ajuste ceñido,
+              tela flexible y cómoda. Para llevarlos dentro del club y al día siguiente.
             </p>
 
             <div className="flex items-center gap-3 mb-8">

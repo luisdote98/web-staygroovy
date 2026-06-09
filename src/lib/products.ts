@@ -101,7 +101,7 @@ export const products: Product[] = [
       model: "/models/model-women-1.png",
     },
     description:
-      "Top crop de mujer 100% algodón con gráfica Stay Groovy. Diseñado para bailar, moverse y formar parte de la noche.",
+      "Top crop de mujer de tela elástica con gráfica Stay Groovy. Ajuste ceñido, tela flexible y cómoda. Diseñado para bailar, moverse y formar parte de la noche.",
     isLaunch: true,
   },
   {
