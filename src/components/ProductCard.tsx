@@ -26,7 +26,7 @@ export default function ProductCard({ product }: { product: Product }) {
       {/* Image */}
       <Link
         href={`/producto/${product.slug}`}
-        className="block relative aspect-[4/5] bg-[#f5f5f5] overflow-hidden rounded-sm"
+        className="block relative aspect-[4/5] bg-transparent overflow-hidden rounded-sm border border-[#c9a84c]/40 hover:border-[#c9a84c] transition-colors duration-300"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
