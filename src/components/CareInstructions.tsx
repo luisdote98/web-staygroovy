@@ -49,12 +49,12 @@ export default function CareInstructions() {
         </div>
 
         {/* Lista editorial */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 bg-[#111111] rounded-xl overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 bg-[#f0f0f0] rounded-xl overflow-hidden">
           {CARE.map(({ num, label, desc }, i) => (
             <div
               key={num}
-              className={`group flex items-start gap-6 py-7 px-8 border-t border-white/[0.06] hover:bg-white/[0.04] transition-colors duration-200 cursor-default
-                ${i % 2 === 0 ? "" : "md:border-l md:border-white/[0.06]"}
+              className={`group flex items-start gap-6 py-7 px-8 border-t border-[#e0e0e0] hover:bg-[#e8e8e8] transition-colors duration-200 cursor-default
+                ${i % 2 === 0 ? "" : "md:border-l md:border-[#e0e0e0]"}
               `}
             >
               {/* Número dorado */}
@@ -64,10 +64,10 @@ export default function CareInstructions() {
 
               {/* Texto */}
               <div className="flex flex-col gap-1">
-                <h3 className="text-white text-sm font-semibold tracking-wide group-hover:text-[#c9a84c] transition-colors duration-200">
+                <h3 className="text-[#0a0a0a] text-sm font-semibold tracking-wide group-hover:text-[#c9a84c] transition-colors duration-200">
                   {label}
                 </h3>
-                <p className="text-white/40 text-xs leading-relaxed">{desc}</p>
+                <p className="text-[#0a0a0a]/50 text-xs leading-relaxed">{desc}</p>
               </div>
             </div>
           ))}
