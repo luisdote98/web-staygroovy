@@ -36,20 +36,15 @@ export default function AboutSection() {
 
             <div className="flex flex-col gap-4 text-[#0a0a0a]/55 text-sm leading-relaxed max-w-lg">
               <p>
-                Stay Groovy es un dúo de DJs con base en Granada que ha consolidado
-                una identidad propia dentro de la escena groove. El proyecto nace de
-                la conexión natural entre ambos artistas, una lectura precisa del
-                público y una forma dinámica, elegante y fluida de entender la
-                música electrónica.
+                Stay Groovy nace en Granada con una visión clara: crear una marca
+                de ropa que refleje nuestra identidad dentro de la cultura de club.
+                Cada pieza está pensada para quien vive la música desde dentro.
               </p>
               <p>
-                El groove es el eje central de todo. No como género, sino como
-                actitud. Una manera de moverse, de mezclar y de crear momentos que
-                la gente recuerda al día siguiente.
-              </p>
-              <p>
-                Con presencia en Granada, Málaga y Almería. Una identidad joven,
-                seria y en constante evolución.
+                Nuestro logo es el núcleo de todo. Lo entendemos como algo vivo,
+                en constante evolución — nuevos colores, formas 3D, colaboraciones
+                y detalles que irán apareciendo con cada drop. No es solo una
+                gráfica, es una firma.
               </p>
             </div>
 
@@ -57,7 +52,7 @@ export default function AboutSection() {
 
             <blockquote className="border-l-2 border-[#c9a84c] pl-4">
               <p className="text-[#0a0a0a] text-base font-medium leading-snug">
-                "Club culture, cotton and movement."
+                "Cada colección, una experiencia diferente."
               </p>
               <cite className="text-[#0a0a0a]/35 text-[11px] tracking-[0.15em] uppercase not-italic mt-1 block">
                 — Stay Groovy, Granada
