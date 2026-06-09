@@ -37,7 +37,7 @@ export default function WomenSection() {
           {/* Images — right */}
           <div className="order-1 lg:order-2">
             <div className="grid grid-cols-2 gap-3">
-              <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-white">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-sm">
                 <Image
                   src="/models/model-women-1.png"
                   alt="Stay Groovy Top Mujer"
@@ -46,7 +46,7 @@ export default function WomenSection() {
                   sizes="(max-width: 1024px) 50vw, 25vw"
                 />
               </div>
-              <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-white mt-8">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-sm mt-8">
                 <Image
                   src="/models/model-women-2.png"
                   alt="Stay Groovy Top Mujer"

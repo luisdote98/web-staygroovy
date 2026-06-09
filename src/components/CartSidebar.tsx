@@ -51,7 +51,7 @@ export default function CartSidebar() {
             <div className="space-y-4">
               {state.items.map((item) => (
                 <div key={`${item.product.id}-${item.size}`} className="flex gap-4 py-4 border-b border-[#e5e5e5]">
-                  <div className="w-[72px] h-[72px] bg-[#f5f5f5] flex-shrink-0 overflow-hidden">
+                  <div className="w-[72px] h-[72px] bg-transparent border border-[#c9a84c]/30 flex-shrink-0 overflow-hidden">
                     <Image
                       src={item.product.images.product}
                       alt={item.product.nameEs}

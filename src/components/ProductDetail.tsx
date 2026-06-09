@@ -45,7 +45,7 @@ export default function ProductDetail({ product }: { product: Product }) {
         {/* ── Images ── */}
         <div className="flex flex-col gap-3">
           {/* Main */}
-          <div className="relative aspect-[4/5] bg-[#f2f2f2] overflow-hidden rounded-sm">
+          <div className="relative aspect-[4/5] bg-transparent overflow-hidden rounded-sm border border-[#c9a84c]/40">
             <Image
               src={product.images[activeImg]}
               alt={product.nameEs}
@@ -67,7 +67,7 @@ export default function ProductDetail({ product }: { product: Product }) {
               <button
                 key={k}
                 onClick={() => setActiveImg(k)}
-                className={`relative aspect-[4/5] bg-[#f2f2f2] overflow-hidden rounded-sm border-2 transition-colors ${
+                className={`relative aspect-[4/5] bg-transparent overflow-hidden rounded-sm border-2 transition-colors ${
                   activeImg === k ? "border-[#c9a84c]" : "border-transparent opacity-50 hover:opacity-80"
                 }`}
               >
