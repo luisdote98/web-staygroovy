@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Hero() {
   return (
     <section
-      className="flex flex-col bg-[#0a0a0a]"
+      className="flex flex-col bg-white"
       style={{ paddingTop: "72px" }}
     >
       {/* ── Logo + MERCH — arriba del vídeo ── */}
@@ -13,11 +13,11 @@ export default function Hero() {
           alt="Stay Groovy"
           width={420}
           height={175}
-          className="w-40 sm:w-56 md:w-72 lg:w-80 h-auto object-contain invert"
+          className="w-40 sm:w-56 md:w-72 lg:w-80 h-auto object-contain"
           priority
         />
         <h1
-          className="font-display text-white tracking-[0.15em] leading-none"
+          className="font-display text-[#0a0a0a] tracking-[0.15em] leading-none"
           style={{ fontSize: "clamp(2.5rem, 7vw, 5.5rem)", margin: 0 }}
         >
           MERCH
