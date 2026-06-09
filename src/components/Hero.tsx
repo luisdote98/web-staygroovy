@@ -12,7 +12,7 @@ export default function Hero() {
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-contain md:object-cover"
         style={{ zIndex: 0 }}
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
@@ -21,7 +21,7 @@ export default function Hero() {
       {/* ── Dark overlay so logo stays legible ── */}
       <div
         className="absolute inset-0"
-        style={{ background: "rgba(0,0,0,0.45)", zIndex: 1 }}
+        style={{ background: "rgba(0,0,0,0.55)", zIndex: 1 }}
       />
 
       {/* ── Content ── */}
