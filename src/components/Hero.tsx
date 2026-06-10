@@ -3,31 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-// ── Vídeos que se reproducen en secuencia ──────────────────
-const VIDEOS = [
-  "/videos/model-walk.mp4",
-];
-// ──────────────────────────────────────────────────────────
-
 export default function Hero() {
-  const videoRef  = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [videoIndex, setVideoIndex] = useState(0);
   const [scrollY, setScrollY] = useState(0);
-
-  // Rotar vídeos al terminar cada uno
-  function handleVideoEnd() {
-    setVideoIndex((i) => (i + 1) % VIDEOS.length);
-  }
-
-  // Cambiar src al cambiar índice
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.src = VIDEOS[videoIndex];
-    v.load();
-    v.play().catch(() => {});
-  }, [videoIndex]);
 
   // Scroll cinematic: escala + fade del contenido
   useEffect(() => {
@@ -60,11 +38,10 @@ export default function Hero() {
     >
       {/* ── Vídeo fullscreen ── */}
       <video
-        ref={videoRef}
         autoPlay
         muted
+        loop
         playsInline
-        onEnded={handleVideoEnd}
         className="absolute inset-0 w-full h-full"
         style={{
           objectFit: "cover",
@@ -75,7 +52,7 @@ export default function Hero() {
           willChange: "transform",
         }}
       >
-        <source src={VIDEOS[0]} type="video/mp4" />
+        <source src="/videos/model-walk.mp4" type="video/mp4" />
       </video>
 
       {/* ── Gradient overlay ── */}
