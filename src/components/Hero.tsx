@@ -4,30 +4,77 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 export default function Hero() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const videoRef    = useRef<HTMLVideoElement>(null);
+  const rafRef      = useRef<number | null>(null);
+  const reversing   = useRef(false);
+  const lastTimeRef = useRef<number>(0);
+  const sectionRef  = useRef<HTMLDivElement>(null);
   const [scrollY, setScrollY] = useState(0);
+  const [loaded, setLoaded]   = useState(false);
 
-  // Scroll cinematic: escala + fade del contenido
+  // ── Ping-pong: retrocede al terminar, luego vuelve hacia adelante ──
+  function startReverse() {
+    const v = videoRef.current;
+    if (!v) return;
+    reversing.current = true;
+    lastTimeRef.current = performance.now();
+
+    function step(now: number) {
+      const v = videoRef.current;
+      if (!v || !reversing.current) return;
+
+      const delta = (now - lastTimeRef.current) / 1000; // segundos reales
+      lastTimeRef.current = now;
+
+      const next = v.currentTime - delta;
+
+      if (next <= 0) {
+        // Llegó al inicio → reproducir hacia adelante de nuevo
+        reversing.current = false;
+        v.currentTime = 0;
+        v.play().catch(() => {});
+        return;
+      }
+
+      v.currentTime = next;
+      rafRef.current = requestAnimationFrame(step);
+    }
+
+    rafRef.current = requestAnimationFrame(step);
+  }
+
+  function handleEnded() {
+    const v = videoRef.current;
+    if (!v) return;
+    v.pause();
+    startReverse();
+  }
+
+  // Cleanup RAF al desmontar
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  // Scroll cinematic
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Valores derivados del scroll
-  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-  const scrollProgress = Math.min(scrollY / (vh * 0.6), 1);
-  const videoScale     = 1 - scrollProgress * 0.06;          // 1 → 0.94
-  const contentOpacity = 1 - scrollProgress * 1.6;           // fade rápido
-  const contentBlur    = scrollProgress * 12;                 // 0 → 12px
-
-  // Animación de entrada (carga)
-  const [loaded, setLoaded] = useState(false);
+  // Animación de entrada
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(t);
   }, []);
 
+  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+  const scrollProgress = Math.min(scrollY / (vh * 0.6), 1);
+  const videoScale     = 1 - scrollProgress * 0.06;
+  const contentOpacity = 1 - scrollProgress * 1.6;
+  const contentBlur    = scrollProgress * 12;
   const entryBase = "transition-all duration-[900ms] ease-[cubic-bezier(0.4,0,0.2,1)]";
 
   return (
@@ -38,10 +85,11 @@ export default function Hero() {
     >
       {/* ── Vídeo fullscreen ── */}
       <video
+        ref={videoRef}
         autoPlay
         muted
-        loop
         playsInline
+        onEnded={handleEnded}
         className="absolute inset-0 w-full h-full"
         style={{
           objectFit: "cover",
@@ -77,7 +125,7 @@ export default function Hero() {
       >
         <div className="flex flex-col items-center text-center gap-6 w-full max-w-[700px]">
 
-          {/* Logo Stay Groovy */}
+          {/* Logo */}
           <div
             className={entryBase}
             style={{
@@ -114,13 +162,10 @@ export default function Hero() {
           {/* Línea decorativa */}
           <div
             className={`w-12 h-px bg-white/25 ${entryBase}`}
-            style={{
-              opacity: loaded ? 1 : 0,
-              transitionDelay: "280ms",
-            }}
+            style={{ opacity: loaded ? 1 : 0, transitionDelay: "280ms" }}
           />
 
-          {/* SHOP COLLECTION button */}
+          {/* SHOP COLLECTION */}
           <a
             href="#shop"
             className={`group ${entryBase}`}
@@ -133,19 +178,18 @@ export default function Hero() {
           >
             <span
               className="block font-display tracking-[0.25em] text-[0.8rem] px-10 py-4 transition-all duration-300"
-              style={{
-                background: "#c9a84c",
-                color: "#0a0a0a",
-              }}
+              style={{ background: "#c9a84c", color: "#0a0a0a" }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.background = "#e2c97e";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(201,168,76,0.25)";
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "#e2c97e";
+                el.style.transform  = "translateY(-2px)";
+                el.style.boxShadow  = "0 8px 32px rgba(201,168,76,0.25)";
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.background = "#c9a84c";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "#c9a84c";
+                el.style.transform  = "translateY(0)";
+                el.style.boxShadow  = "none";
               }}
             >
               SHOP COLLECTION
@@ -169,21 +213,14 @@ export default function Hero() {
         >
           SCROLL
         </span>
-        <div
-          className="w-px bg-white/20 overflow-hidden"
-          style={{ height: "40px" }}
-        >
+        <div className="w-px bg-white/20 overflow-hidden" style={{ height: "40px" }}>
           <div
             className="w-full bg-[#c9a84c]/70"
-            style={{
-              height: "40px",
-              animation: "scrollLine 1.8s ease-in-out infinite",
-            }}
+            style={{ height: "40px", animation: "scrollLine 1.8s ease-in-out infinite" }}
           />
         </div>
       </div>
 
-      {/* ── Scroll line keyframe ── */}
       <style>{`
         @keyframes scrollLine {
           0%   { transform: translateY(-100%); opacity: 1; }
