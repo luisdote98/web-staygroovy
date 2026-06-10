@@ -40,8 +40,28 @@ export default function CountdownBanner() {
   }, []);
 
   return (
-    <section className="bg-[#111111] border-b border-white/[0.06]">
-      <div className="container-base py-14 md:py-16">
+    <section className="relative bg-[#0a0a0a] border-b border-white/[0.06] overflow-hidden">
+
+      {/* ── Vídeo de fondo completo, sin recorte ── */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full"
+        style={{ objectFit: "contain", objectPosition: "center" }}
+        aria-hidden
+      >
+        <source src="/videos/hero.mp4" type="video/mp4" />
+      </video>
+
+      {/* Overlay oscuro para legibilidad */}
+      <div
+        className="absolute inset-0"
+        style={{ background: "rgba(0,0,0,0.72)", zIndex: 1 }}
+      />
+
+      <div className="container-base py-14 md:py-16" style={{ position: "relative", zIndex: 2 }}>
         <div className="flex flex-col items-center text-center gap-6">
 
           <Reveal variant="fade-up-blur" delay={0}>

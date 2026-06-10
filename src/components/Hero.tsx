@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Image from "next/image";
 
 // ── Vídeos que se reproducen en secuencia ──────────────────
 const VIDEOS = [
@@ -101,19 +101,25 @@ export default function Hero() {
       >
         <div className="flex flex-col items-center text-center gap-6 w-full max-w-[700px]">
 
-          {/* STAY GROOVY */}
-          <h1
-            className={`font-display text-white leading-none tracking-[0.06em] ${entryBase}`}
+          {/* Logo Stay Groovy */}
+          <div
+            className={entryBase}
             style={{
-              fontSize: "clamp(3.5rem, 12vw, 9rem)",
               opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateY(0) " : "translateY(32px)",
+              transform: loaded ? "translateY(0)" : "translateY(32px)",
               filter: loaded ? "blur(0px)" : "blur(10px)",
               transitionDelay: "0ms",
             }}
           >
-            STAY GROOVY
-          </h1>
+            <Image
+              src="/logos/logo-letras.png"
+              alt="Stay Groovy"
+              width={700}
+              height={290}
+              className="w-[260px] sm:w-[380px] md:w-[480px] lg:w-[580px] h-auto object-contain invert"
+              priority
+            />
+          </div>
 
           {/* FIRST DROP 001 */}
           <p
