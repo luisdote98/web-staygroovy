@@ -6,7 +6,6 @@ import Image from "next/image";
 // ── Vídeos que se reproducen en secuencia ──────────────────
 const VIDEOS = [
   "/videos/model-walk.mp4",
-  "/videos/hero.mp4",
 ];
 // ──────────────────────────────────────────────────────────
 
