@@ -5,15 +5,13 @@ import Reveal from "./Reveal";
 
 const LAUNCH_END = new Date("2026-07-04T23:59:59");
 
-function pad(n: number) {
-  return String(Math.max(0, n)).padStart(2, "0");
-}
+function pad(n: number) { return String(Math.max(0, n)).padStart(2, "0"); }
 function getTimeLeft() {
   const diff = LAUNCH_END.getTime() - Date.now();
   if (diff <= 0) return { days: 0, hours: 0, minutes: 0, expired: true };
   return {
-    days:    Math.floor(diff / 86_400_000),
-    hours:   Math.floor((diff / 3_600_000) % 24),
+    days: Math.floor(diff / 86_400_000),
+    hours: Math.floor((diff / 3_600_000) % 24),
     minutes: Math.floor((diff / 60_000) % 60),
     expired: false,
   };
@@ -36,20 +34,18 @@ export default function CountdownBanner() {
   }, []);
 
   return (
-    <section className="bg-white border-b border-[#e5e5e5] overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[520px]">
+    <div className="bg-white border-b border-[#e5e5e5] overflow-hidden" style={{ minHeight: "100vh" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 h-full" style={{ minHeight: "100vh" }}>
 
-        {/* LEFT: texto */}
-        <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 py-16 lg:py-20 order-2 lg:order-1">
-
+        {/* LEFT: texto centrado */}
+        <div className="scene-center px-8 sm:px-12 lg:px-16 py-16 order-2 lg:order-1">
           <Reveal variant="title" delay={0}>
             <div className="flex items-center gap-3 mb-8">
               <div className="w-6 h-px bg-[#c9a84c]" />
               <p className="text-[#c9a84c] text-[11px] tracking-[0.35em] uppercase font-medium">First Drop · Primer mes</p>
             </div>
           </Reveal>
-
-          <Reveal variant="title" delay={100}>
+          <Reveal variant="title" delay={120}>
             <div className="flex items-end gap-4 mb-3">
               <span className="font-display text-[#0a0a0a] leading-none" style={{ fontSize: "clamp(4.5rem, 9vw, 7rem)" }}>18€</span>
               <div className="pb-2">
@@ -58,12 +54,10 @@ export default function CountdownBanner() {
               </div>
             </div>
           </Reveal>
-
-          <Reveal variant="text" delay={200}>
+          <Reveal variant="text" delay={240}>
             <p className="text-[#0a0a0a]/40 text-sm mb-8">Precio de lanzamiento durante el primer mes.</p>
           </Reveal>
-
-          <Reveal variant="image" delay={300}>
+          <Reveal variant="image" delay={320}>
             {!time.expired ? (
               <div className="flex flex-col gap-3 mb-10">
                 <p className="text-[#0a0a0a]/30 text-[10px] tracking-[0.25em] uppercase">Finaliza en</p>
@@ -79,8 +73,7 @@ export default function CountdownBanner() {
               <p className="text-[#0a0a0a]/30 text-xs tracking-[0.2em] uppercase mb-10">Precio de lanzamiento finalizado</p>
             )}
           </Reveal>
-
-          <Reveal variant="action" delay={420}>
+          <Reveal variant="action" delay={440}>
             <a href="#shop" className="btn-gold self-start px-10 py-4 text-[11px] tracking-[0.25em]">
               Comprar ahora — 18€
             </a>
@@ -88,14 +81,13 @@ export default function CountdownBanner() {
         </div>
 
         {/* RIGHT: vídeo */}
-        <Reveal variant="image" delay={120} className="relative bg-[#f5f5f5] flex items-center justify-center order-1 lg:order-2 min-h-[300px]">
+        <Reveal variant="image" delay={120} className="relative bg-[#f5f5f5] flex items-center justify-center order-1 lg:order-2 min-h-[40vh] lg:min-h-0">
           <video autoPlay muted loop playsInline className="w-full h-full"
-            style={{ objectFit: "contain", objectPosition: "center", maxHeight: "520px" }}>
+            style={{ objectFit: "contain", objectPosition: "center", maxHeight: "100vh" }}>
             <source src="/videos/hero.mp4" type="video/mp4" />
           </video>
         </Reveal>
-
       </div>
-    </section>
+    </div>
   );
 }

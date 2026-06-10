@@ -10,9 +10,14 @@ const CARDS = [
 
 export default function LaunchBanner() {
   return (
-    <section className="bg-[#0a0a0a] py-16 md:py-20">
-      <div className="container-base">
-        <div className="border border-white/[0.1] rounded-xl p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+    <div className="bg-[#0a0a0a] scene-center" style={{ minHeight: "100vh" }}>
+      {/* Radial glow de fondo */}
+      <div aria-hidden className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,168,76,0.05) 0%, transparent 70%)" }} />
+
+      <div className="container-base py-16 md:py-20 relative">
+        <div className="border border-white/[0.08] rounded-2xl p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16"
+          style={{ background: "rgba(255,255,255,0.02)", backdropFilter: "blur(1px)" }}>
 
           {/* LEFT */}
           <div className="flex flex-col justify-between gap-8">
@@ -20,7 +25,7 @@ export default function LaunchBanner() {
               <Reveal variant="title" delay={0}>
                 <p className="eyebrow mb-6">Drop · Primer mes</p>
               </Reveal>
-              <Reveal variant="title" delay={100}>
+              <Reveal variant="title" delay={120}>
                 <div className="flex items-end gap-5 mb-4">
                   <span className="font-display text-white leading-none" style={{ fontSize: "clamp(4rem, 10vw, 7rem)" }}>18€</span>
                   <div className="pb-2 flex flex-col gap-0.5">
@@ -29,15 +34,14 @@ export default function LaunchBanner() {
                   </div>
                 </div>
               </Reveal>
-              <Reveal variant="text" delay={200}>
+              <Reveal variant="text" delay={240}>
                 <p className="text-white/40 text-sm leading-relaxed">
                   <span className="text-white/70 font-medium">Precio de lanzamiento</span>{" "}durante el primer mes
                 </p>
                 <div className="w-10 h-[2px] bg-[#c9a84c] mt-6" />
               </Reveal>
             </div>
-
-            <Reveal variant="text" delay={300}>
+            <Reveal variant="text" delay={320}>
               <blockquote className="border-l-2 border-[#c9a84c] pl-5">
                 <p className="font-display text-white leading-tight tracking-[0.03em]"
                    style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)" }}>
@@ -45,11 +49,8 @@ export default function LaunchBanner() {
                 </p>
               </blockquote>
             </Reveal>
-
-            <Reveal variant="action" delay={420}>
-              <a href="#shop" className="btn-gold self-start px-10 py-4 text-sm tracking-[0.2em]">
-                Comprar ahora →
-              </a>
+            <Reveal variant="action" delay={440}>
+              <a href="#shop" className="btn-gold self-start px-10 py-4 text-sm tracking-[0.2em]">Comprar ahora →</a>
             </Reveal>
           </div>
 
@@ -69,9 +70,8 @@ export default function LaunchBanner() {
               </Reveal>
             ))}
           </div>
-
         </div>
       </div>
-    </section>
+    </div>
   );
 }

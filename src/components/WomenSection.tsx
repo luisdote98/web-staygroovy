@@ -5,8 +5,11 @@ import Reveal from "./Reveal";
 
 export default function WomenSection() {
   return (
-    <section id="tops-mujer" className="section-pad bg-[#f5f5f5] border-b border-[#e5e5e5]">
-      <div className="container-base">
+    <div id="tops-mujer" className="bg-[#f5f5f5] border-b border-[#e5e5e5] scene-center" style={{ minHeight: "100vh" }}>
+      {/* Radial glow suave */}
+      <div aria-hidden className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 70%)" }} />
+      <div className="container-base section-pad relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
           {/* Text — left */}
@@ -22,11 +25,10 @@ export default function WomenSection() {
                 Diseñados para bailar, moverse y formar parte de la noche.
               </p>
               <p className="text-[#0a0a0a]/40 text-sm leading-relaxed mt-2 max-w-md">
-                Crop tops de tela elástica con gráfica Stay Groovy. Ajuste ceñido,
-                tela flexible y cómoda.
+                Crop tops de tela elástica con gráfica Stay Groovy. Ajuste ceñido, tela flexible y cómoda.
               </p>
             </Reveal>
-            <Reveal variant="text" delay={340}>
+            <Reveal variant="text" delay={320}>
               <div className="flex items-center gap-3">
                 <span className="text-[#0a0a0a]/30 text-[10px] tracking-[0.2em] uppercase">Tallas</span>
                 {["S", "M", "L"].map((s) => (
@@ -34,7 +36,7 @@ export default function WomenSection() {
                 ))}
               </div>
             </Reveal>
-            <Reveal variant="action" delay={440}>
+            <Reveal variant="action" delay={420}>
               <a href="#shop" className="btn-gold self-start">Ver tops</a>
             </Reveal>
           </div>
@@ -42,13 +44,13 @@ export default function WomenSection() {
           {/* Images — right */}
           <div className="order-1 lg:order-2">
             <div className="grid grid-cols-2 gap-3">
-              <Reveal variant="image" delay={80} threshold={0.1}>
+              <Reveal variant="image" delay={80} threshold={0.08}>
                 <div className="relative aspect-[3/4] overflow-hidden rounded-sm">
                   <Image src="/models/model-women-1.png" alt="Stay Groovy Top Mujer" fill
                     className="object-cover object-top" sizes="(max-width: 1024px) 50vw, 25vw" />
                 </div>
               </Reveal>
-              <Reveal variant="image" delay={200} threshold={0.1}>
+              <Reveal variant="image" delay={200} threshold={0.08}>
                 <div className="relative aspect-[3/4] overflow-hidden rounded-sm mt-8">
                   <Image src="/models/model-women-2.png" alt="Stay Groovy Top Mujer" fill
                     className="object-cover object-top" sizes="(max-width: 1024px) 50vw, 25vw" />
@@ -56,9 +58,8 @@ export default function WomenSection() {
               </Reveal>
             </div>
           </div>
-
         </div>
       </div>
-    </section>
+    </div>
   );
 }
