@@ -10,11 +10,13 @@ import {
 import Image from "next/image";
 
 // ─── Configuración ─────────────────────────────────────────
-const SCENE_COUNT = 4; // Número de escenas
+const SCENE_COUNT = 4;
 
-// Límites de transición (porcentaje del rango de cada escena)
-const FADE_IN  = 0.22; // 0 → FADE_IN  : fade-in
-const FADE_OUT = 0.78; // FADE_OUT → 1 : fade-out
+// Las escenas se SOLAPAN: cada una empieza a aparecer 0.25*vh
+// ANTES de su turno nominal, creando crossfade real.
+const OVERLAP   = 0.25;  // fracción de solapamiento con escena anterior
+const FADE_IN   = 0.20;  // duración del fade-in dentro del solapamiento
+const FADE_OUT  = 0.80;  // punto desde el que empieza el fade-out
 // ───────────────────────────────────────────────────────────
 
 function lerp(a: number, b: number, t: number) {
@@ -25,14 +27,18 @@ function easeInOut(t: number) {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
 
+// p va de −OVERLAP (empieza el crossfade) hasta 1+OVERLAP (termina)
+// Zona activa: 0 → 1 (1 rango de vh)
+// Zona de entrada (crossfade solapado): −OVERLAP → 0
 function computeSceneStyle(
   scrollY: number,
   index: number,
   vh: number
 ): CSSProperties {
-  const p = (scrollY - index * vh) / vh; // −∞…0 = antes, 0…1 = activa, 1…+∞ = pasada
+  const p = (scrollY - index * vh) / vh;
 
-  if (p <= 0 || p >= 1) {
+  // Fuera de rango: completamente invisible
+  if (p < -OVERLAP || p >= 1) {
     return {
       opacity: 0,
       transform: "scale(0.94)",
@@ -44,11 +50,18 @@ function computeSceneStyle(
 
   let opacity: number, blur: number, scale: number;
 
-  if (p < FADE_IN) {
+  if (p < 0) {
+    // Zona de solapamiento: aparece mientras la escena anterior sale
+    const t = easeInOut((p + OVERLAP) / OVERLAP);
+    opacity = lerp(0,    1,    t);
+    blur    = lerp(24,   0,    t);
+    scale   = lerp(0.94, 1,    t);
+  } else if (p < FADE_IN) {
+    // Fade-in complementario dentro del rango activo
     const t = easeInOut(p / FADE_IN);
-    opacity = lerp(0,   1,    t);
-    blur    = lerp(24,  0,    t);
-    scale   = lerp(0.94, 1,   t);
+    opacity = lerp(0,    1,    t);
+    blur    = lerp(12,   0,    t);
+    scale   = lerp(0.97, 1,    t);
   } else if (p <= FADE_OUT) {
     opacity = 1;
     blur    = 0;
@@ -332,13 +345,11 @@ export default function ScrollScenes() {
     <SceneShopIntro   key="shopintro" />,
   ];
 
-  // La primera escena arranca visible (scrollY = 0 → p = 0/vh = 0, estaría invisible)
-  // Queremos que la escena 0 empiece completamente visible.
-  // Ajuste: desplazamos el cálculo +0.3 para que la escena 0 entre ya activa.
+  // Escena 0: activa desde el inicio (p=0), se desvanece según FADE_OUT
+  // El resto usan computeSceneStyle con solapamiento
   function styleFor(index: number): CSSProperties {
     if (index === 0) {
-      // Escena 0: activa desde el inicio, se desvanece al acercarse a la siguiente
-      const p = scrollY / vh; // 0 → 1
+      const p = scrollY / vh;
       let opacity = 1, blur = 0, scale = 1;
       if (p > FADE_OUT) {
         const t = easeInOut((p - FADE_OUT) / (1 - FADE_OUT));
@@ -359,7 +370,7 @@ export default function ScrollScenes() {
 
   return (
     <>
-      {/* Spacer que da profundidad al scroll */}
+      {/* Spacer: SCENE_COUNT * vh da scroll total suficiente */}
       <div style={{ height: `${SCENE_COUNT * vh}px` }}>
         <div className="sticky top-0 overflow-hidden bg-black" style={{ height: `${vh}px` }}>
           {scenes.map((scene, i) => (
