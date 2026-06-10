@@ -4,78 +4,27 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 export default function Hero() {
-  const videoRef    = useRef<HTMLVideoElement>(null);
-  const rafRef      = useRef<number | null>(null);
-  const reversing   = useRef(false);
-  const lastTimeRef = useRef<number>(0);
-  const sectionRef  = useRef<HTMLDivElement>(null);
-  const [scrollY, setScrollY] = useState(0);
-  const [loaded, setLoaded]   = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY]   = useState(0);
+  const [loaded, setLoaded]     = useState(false);
 
-  // ── Ping-pong: retrocede al terminar, luego vuelve hacia adelante ──
-  function startReverse() {
-    const v = videoRef.current;
-    if (!v) return;
-    reversing.current = true;
-    lastTimeRef.current = performance.now();
-
-    function step(now: number) {
-      const v = videoRef.current;
-      if (!v || !reversing.current) return;
-
-      const delta = (now - lastTimeRef.current) / 1000; // segundos reales
-      lastTimeRef.current = now;
-
-      const next = v.currentTime - delta;
-
-      if (next <= 0) {
-        // Llegó al inicio → reproducir hacia adelante de nuevo
-        reversing.current = false;
-        v.currentTime = 0;
-        v.play().catch(() => {});
-        return;
-      }
-
-      v.currentTime = next;
-      rafRef.current = requestAnimationFrame(step);
-    }
-
-    rafRef.current = requestAnimationFrame(step);
-  }
-
-  function handleEnded() {
-    const v = videoRef.current;
-    if (!v) return;
-    v.pause();
-    startReverse();
-  }
-
-  // Cleanup RAF al desmontar
-  useEffect(() => {
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
-
-  // Scroll cinematic
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Animación de entrada
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(t);
   }, []);
 
-  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+  const vh             = typeof window !== "undefined" ? window.innerHeight : 800;
   const scrollProgress = Math.min(scrollY / (vh * 0.6), 1);
   const videoScale     = 1 - scrollProgress * 0.06;
   const contentOpacity = 1 - scrollProgress * 1.6;
   const contentBlur    = scrollProgress * 12;
-  const entryBase = "transition-all duration-[900ms] ease-[cubic-bezier(0.4,0,0.2,1)]";
+  const entryBase      = "transition-all duration-[900ms] ease-[cubic-bezier(0.4,0,0.2,1)]";
 
   return (
     <section
@@ -83,13 +32,12 @@ export default function Hero() {
       className="relative w-full overflow-hidden bg-black"
       style={{ height: "100svh" }}
     >
-      {/* ── Vídeo fullscreen ── */}
+      {/* Vídeo fullscreen */}
       <video
-        ref={videoRef}
         autoPlay
         muted
+        loop
         playsInline
-        onEnded={handleEnded}
         className="absolute inset-0 w-full h-full"
         style={{
           objectFit: "cover",
@@ -103,7 +51,7 @@ export default function Hero() {
         <source src="/videos/model-walk.mp4" type="video/mp4" />
       </video>
 
-      {/* ── Gradient overlay ── */}
+      {/* Gradient overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -112,7 +60,7 @@ export default function Hero() {
         }}
       />
 
-      {/* ── Content ── */}
+      {/* Content */}
       <div
         className="absolute inset-0 flex flex-col items-center justify-center px-6"
         style={{
@@ -125,7 +73,6 @@ export default function Hero() {
       >
         <div className="flex flex-col items-center text-center gap-6 w-full max-w-[700px]">
 
-          {/* Logo */}
           <div
             className={entryBase}
             style={{
@@ -145,7 +92,6 @@ export default function Hero() {
             />
           </div>
 
-          {/* FIRST DROP 001 */}
           <p
             className={`font-display text-[#c9a84c] tracking-[0.35em] leading-none ${entryBase}`}
             style={{
@@ -159,13 +105,11 @@ export default function Hero() {
             FIRST DROP 001
           </p>
 
-          {/* Línea decorativa */}
           <div
             className={`w-12 h-px bg-white/25 ${entryBase}`}
             style={{ opacity: loaded ? 1 : 0, transitionDelay: "280ms" }}
           />
 
-          {/* SHOP COLLECTION */}
           <a
             href="#shop"
             className={`group ${entryBase}`}
@@ -198,7 +142,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ── Scroll indicator ── */}
+      {/* Scroll indicator */}
       <div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         style={{
