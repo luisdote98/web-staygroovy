@@ -41,7 +41,7 @@ export default function Footer() {
               alt="Stay Groovy"
               width={100}
               height={42}
-              className="h-9 w-auto object-contain invert mb-4"
+              className="h-9 w-auto object-contain mb-4"
             />
             <p className="text-white/30 text-xs leading-relaxed max-w-[200px] mb-6">
               Dúo de DJs de Granada. Groove como filosofía, algodón como medio.

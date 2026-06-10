@@ -42,7 +42,7 @@ export default function Header() {
               alt="Stay Groovy"
               width={110}
               height={46}
-              className="h-9 w-auto object-contain invert"
+              className="h-9 w-auto object-contain"
               priority
             />
           </Link>
@@ -93,7 +93,7 @@ export default function Header() {
                 alt="Stay Groovy"
                 width={100}
                 height={42}
-                className="h-8 w-auto object-contain invert"
+                className="h-8 w-auto object-contain"
               />
               <button onClick={() => setOpen(false)} className="p-2 text-white/40 hover:text-white">
                 <X className="w-6 h-6" />

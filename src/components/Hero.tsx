@@ -116,7 +116,7 @@ export default function Hero() {
               alt="Stay Groovy"
               width={700}
               height={290}
-              className="w-[260px] sm:w-[380px] md:w-[480px] lg:w-[580px] h-auto object-contain invert"
+              className="w-[260px] sm:w-[380px] md:w-[480px] lg:w-[580px] h-auto object-contain"
               priority
             />
           </div>
