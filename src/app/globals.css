@@ -32,23 +32,7 @@ html {
   overflow-x: hidden;
 }
 
-/* ── Scroll snap: desktop proximity (suave), móvil desactivado ── */
-@media (min-width: 1024px) {
-  .snap-container {
-    scroll-snap-type: y proximity;
-    overflow-y: auto;
-    height: 100vh;
-    /* Permitir scroll libre sin bloqueo agresivo */
-  }
-}
-
-/* Cada sección principal */
-.snap-scene {
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
-}
-
-/* Utilidad para centrar contenido verticalmente dentro de escenas altas */
+/* Centrar contenido verticalmente en secciones altas */
 .scene-center {
   display: flex;
   flex-direction: column;
