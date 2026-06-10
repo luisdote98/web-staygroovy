@@ -6,7 +6,6 @@ import ProductCard from "./ProductCard";
 import Reveal from "./Reveal";
 
 type Filter = "all" | "tee" | "top";
-
 const FILTERS: { id: Filter; label: string }[] = [
   { id: "all", label: "Todo" },
   { id: "tee", label: "Camisetas" },
@@ -23,21 +22,17 @@ export default function ProductGrid() {
 
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
           <div>
-            <Reveal variant="fade-up-blur" delay={0}>
+            <Reveal variant="title" delay={0}>
               <p className="eyebrow mb-2">Colección SS26</p>
             </Reveal>
-            <Reveal variant="fade-up-blur" delay={80}>
+            <Reveal variant="title" delay={100}>
               <h2 className="font-display title-lg text-[#0a0a0a]">TIENDA</h2>
             </Reveal>
           </div>
-
-          <Reveal variant="fade-blur" delay={160}>
+          <Reveal variant="action" delay={200}>
             <div className="flex gap-1">
               {FILTERS.map(({ id, label }) => (
-                <button
-                  key={id}
-                  data-filter={id}
-                  onClick={() => setFilter(id)}
+                <button key={id} data-filter={id} onClick={() => setFilter(id)}
                   className={`px-4 py-2 text-[11px] tracking-[0.15em] uppercase font-medium transition-all duration-200 ${
                     filter === id
                       ? "bg-[#0a0a0a] text-white"
@@ -53,7 +48,7 @@ export default function ProductGrid() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
           {visible.map((product, i) => (
-            <Reveal key={product.id} variant="fade-up-blur" delay={i * 80} threshold={0.08}>
+            <Reveal key={product.id} variant="image" delay={i * 100} threshold={0.05}>
               <ProductCard product={product} />
             </Reveal>
           ))}

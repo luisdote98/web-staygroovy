@@ -17,35 +17,27 @@ export default function ContactSection() {
       <div className="container-base">
         <div className="max-w-2xl">
 
-          <Reveal variant="fade-up-blur" delay={0}>
+          <Reveal variant="title" delay={0}>
             <p className="eyebrow mb-4">Contacto</p>
-          </Reveal>
-
-          <Reveal variant="fade-up-blur" delay={80}>
             <h2 className="font-display title-lg text-[#0a0a0a] mb-6">
               HABLA CON<br />NOSOTROS
             </h2>
           </Reveal>
 
-          <Reveal variant="fade-up-blur" delay={160}>
+          <Reveal variant="text" delay={150}>
             <p className="text-[#0a0a0a]/45 text-sm leading-relaxed mb-10 max-w-md">
               Para consultas sobre pedidos, tallas, envíos o cualquier pregunta
               sobre la colección. También si quieres colaborar.
             </p>
           </Reveal>
 
-          <Reveal variant="fade-up-blur" delay={240}>
+          <Reveal variant="action" delay={280}>
             <div className="flex flex-wrap gap-3">
               <a href="mailto:staygroovy.duo@gmail.com" className="btn-gold">
                 <Mail className="w-4 h-4" />
                 staygroovy.duo@gmail.com
               </a>
-              <a
-                href="https://instagram.com/staygroovy_duo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-outline-light"
-              >
+              <a href="https://instagram.com/staygroovy_duo" target="_blank" rel="noopener noreferrer" className="btn-outline-light">
                 <IgIcon className="w-4 h-4" />
                 @staygroovy_duo
               </a>

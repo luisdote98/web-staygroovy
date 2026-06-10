@@ -2,37 +2,33 @@
 
 import { useEffect, useRef, useState } from "react";
 
-interface UseRevealOptions {
+interface Options {
   threshold?: number;
   rootMargin?: string;
 }
 
-export function useReveal<T extends HTMLElement = HTMLDivElement>(
-  options: UseRevealOptions = {}
-) {
-  const ref = useRef<T>(null);
+export function useReveal<T extends HTMLElement = HTMLDivElement>(opts: Options = {}) {
+  const ref     = useRef<T>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
-          observer.disconnect(); // solo una vez
+          observer.disconnect();
         }
       },
       {
-        threshold: options.threshold ?? 0.12,
-        rootMargin: options.rootMargin ?? "0px 0px -40px 0px",
+        threshold:  opts.threshold  ?? 0.08,
+        rootMargin: opts.rootMargin ?? "0px 0px -60px 0px",
       }
     );
-
     observer.observe(el);
     return () => observer.disconnect();
-  }, [options.threshold, options.rootMargin]);
+  }, [opts.threshold, opts.rootMargin]);
 
   return { ref, visible };
 }
