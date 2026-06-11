@@ -56,12 +56,6 @@ function computeSceneStyle(
     opacity = lerp(0,    1,    t);
     blur    = lerp(24,   0,    t);
     scale   = lerp(0.94, 1,    t);
-  } else if (p < FADE_IN) {
-    // Fade-in complementario dentro del rango activo
-    const t = easeInOut(p / FADE_IN);
-    opacity = lerp(0,    1,    t);
-    blur    = lerp(12,   0,    t);
-    scale   = lerp(0.97, 1,    t);
   } else if (p <= FADE_OUT) {
     opacity = 1;
     blur    = 0;
@@ -330,9 +324,9 @@ export default function ScrollScenes() {
     return (
       <>
         <div className="relative w-full" style={{ height: "100svh" }}><SceneHero /></div>
-        <div className="relative w-full" style={{ minHeight: "100svh" }}><SceneCountdown /></div>
-        <div className="relative w-full" style={{ minHeight: "100svh" }}><SceneLaunch /></div>
-        <div className="relative w-full" style={{ minHeight: "100svh" }}><SceneShopIntro /></div>
+        <div className="relative w-full" style={{ height: "100svh" }}><SceneCountdown /></div>
+        <div className="relative w-full" style={{ height: "100svh" }}><SceneLaunch /></div>
+        <div className="relative w-full" style={{ height: "100svh" }}><SceneShopIntro /></div>
       </>
     );
   }
