@@ -1,112 +1,17 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  CSSProperties,
-  ReactNode,
-} from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
-// ─── Configuración ─────────────────────────────────────────
-const SCENE_COUNT = 2;
-
-// Las escenas se SOLAPAN: cada una empieza a aparecer 0.25*vh
-// ANTES de su turno nominal, creando crossfade real.
-const OVERLAP   = 0.25;  // fracción de solapamiento con escena anterior
-const FADE_IN   = 0.20;  // duración del fade-in dentro del solapamiento
-const FADE_OUT  = 0.80;  // punto desde el que empieza el fade-out
-// ───────────────────────────────────────────────────────────
-
-function lerp(a: number, b: number, t: number) {
-  return a + (b - a) * Math.max(0, Math.min(1, t));
-}
-
-function easeInOut(t: number) {
-  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-}
-
-// p va de −OVERLAP (empieza el crossfade) hasta 1+OVERLAP (termina)
-// Zona activa: 0 → 1 (1 rango de vh)
-// Zona de entrada (crossfade solapado): −OVERLAP → 0
-function computeSceneStyle(
-  scrollY: number,
-  index: number,
-  vh: number
-): CSSProperties {
-  const p = (scrollY - index * vh) / vh;
-
-  // Fuera de rango: completamente invisible
-  if (p < -OVERLAP || p >= 1) {
-    return {
-      opacity: 0,
-      transform: "scale(0.94)",
-      filter: "blur(24px)",
-      pointerEvents: "none",
-      zIndex: 10 - index,
-    };
-  }
-
-  let opacity: number, blur: number, scale: number;
-
-  if (p < 0) {
-    // Zona de solapamiento: aparece mientras la escena anterior sale
-    const t = easeInOut((p + OVERLAP) / OVERLAP);
-    opacity = lerp(0,    1,    t);
-    blur    = lerp(24,   0,    t);
-    scale   = lerp(0.94, 1,    t);
-  } else if (p <= FADE_OUT) {
-    opacity = 1;
-    blur    = 0;
-    scale   = 1;
-  } else {
-    const t = easeInOut((p - FADE_OUT) / (1 - FADE_OUT));
-    opacity = lerp(1,   0,    t);
-    blur    = lerp(0,   24,   t);
-    scale   = lerp(1,   0.94, t);
-  }
-
-  return {
-    opacity,
-    transform: `scale(${scale.toFixed(4)})`,
-    filter: blur > 0.2 ? `blur(${blur.toFixed(2)}px)` : "none",
-    pointerEvents: opacity > 0.05 ? "auto" : "none",
-    zIndex: 10 - index,
-    willChange: "opacity, transform, filter",
-  };
-}
-
-// ─── Wrapper de escena ──────────────────────────────────────
-function SceneSlot({
-  style,
-  children,
-}: {
-  style: CSSProperties;
-  children: ReactNode;
-}) {
-  return (
-    <div
-      className="absolute inset-0"
-      style={{
-        transition: "opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease",
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
 // ═══════════════════════════════════════════════════════════
-// SCENE 0 — Hero (video fullscreen)
+// HERO — video fullscreen
 // ═══════════════════════════════════════════════════════════
 function SceneHero() {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => { const t = setTimeout(() => setLoaded(true), 80); return () => clearTimeout(t); }, []);
   const e = "transition-all duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]";
   return (
-    <div className="relative w-full h-full bg-black overflow-hidden">
+    <div className="relative w-full bg-black overflow-hidden" style={{ height: "100svh" }}>
       <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full"
         style={{ objectFit: "cover", objectPosition: "center" }}>
         <source src="/videos/model-walk.mp4" type="video/mp4" />
@@ -144,7 +49,7 @@ function SceneHero() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// SCENE 1 — Countdown / First Drop
+// COUNTDOWN — First Drop
 // ═══════════════════════════════════════════════════════════
 const LAUNCH_END = new Date("2026-07-04T23:59:59");
 function pad(n: number) { return String(Math.max(0, n)).padStart(2, "0"); }
@@ -159,137 +64,60 @@ function SceneCountdown() {
   useEffect(() => { const id = setInterval(() => setTime(getTimeLeft()), 1000); return () => clearInterval(id); }, []);
 
   return (
-    <div className="relative w-full h-full bg-white overflow-hidden">
+    <div className="relative w-full bg-white overflow-hidden py-20 lg:py-28">
       {/* video de fondo de camiseta */}
-      <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full opacity-15"
+      <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full opacity-10"
         style={{ objectFit: "contain", objectPosition: "center" }}>
         <source src="/videos/hero.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
-        <div className="flex flex-col items-center text-center gap-6 max-w-lg">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-px bg-[#c9a84c]" />
-            <p className="text-[#c9a84c] text-[10px] tracking-[0.35em] uppercase font-medium">First Drop · Primer mes</p>
-            <div className="w-8 h-px bg-[#c9a84c]" />
-          </div>
-          <div className="flex items-end gap-4">
-            <span className="font-display text-[#0a0a0a] leading-none" style={{ fontSize: "clamp(5rem, 14vw, 9rem)" }}>18€</span>
-            <div className="pb-3">
-              <span className="block text-[#0a0a0a]/20 text-2xl line-through leading-none">22€</span>
-              <span className="text-[#c9a84c] text-[9px] tracking-[0.3em] uppercase">después</span>
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-[#0a0a0a]/30 text-[9px] tracking-[0.3em] uppercase">Finaliza en</p>
-            <div className="flex items-center gap-2">
-              {[
-                { v: pad(time.days),    l: "Días" },
-                { v: pad(time.hours),   l: "Horas" },
-                { v: pad(time.minutes), l: "Min" },
-              ].map(({ v, l }, i) => (
-                <div key={l} className="flex items-center gap-2">
-                  {i > 0 && <span className="text-[#c9a84c]/40 font-display text-2xl pb-2">:</span>}
-                  <div className="flex flex-col items-center border border-[#0a0a0a]/10 bg-white/80 px-4 py-3 min-w-[60px]">
-                    <span className="font-display text-[#0a0a0a] text-2xl leading-none tabular-nums">{v}</span>
-                    <span className="text-[#0a0a0a]/30 text-[8px] tracking-[0.2em] uppercase mt-1">{l}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <a href="#shop" className="btn-gold px-10 py-4 text-[10px] tracking-[0.25em] mt-2">
-            Comprar ahora — 18€
-          </a>
+      <div className="relative flex flex-col items-center text-center gap-6 max-w-lg mx-auto px-6">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-px bg-[#c9a84c]" />
+          <p className="text-[#c9a84c] text-[10px] tracking-[0.35em] uppercase font-medium">First Drop · Primer mes</p>
+          <div className="w-8 h-px bg-[#c9a84c]" />
         </div>
+        <div className="flex items-end gap-4">
+          <span className="font-display text-[#0a0a0a] leading-none" style={{ fontSize: "clamp(5rem, 14vw, 9rem)" }}>18€</span>
+          <div className="pb-3">
+            <span className="block text-[#0a0a0a]/20 text-2xl line-through leading-none">22€</span>
+            <span className="text-[#c9a84c] text-[9px] tracking-[0.3em] uppercase">después</span>
+          </div>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <p className="text-[#0a0a0a]/30 text-[9px] tracking-[0.3em] uppercase">Finaliza en</p>
+          <div className="flex items-center gap-2">
+            {[
+              { v: pad(time.days),    l: "Días" },
+              { v: pad(time.hours),   l: "Horas" },
+              { v: pad(time.minutes), l: "Min" },
+            ].map(({ v, l }, i) => (
+              <div key={l} className="flex items-center gap-2">
+                {i > 0 && <span className="text-[#c9a84c]/40 font-display text-2xl pb-2">:</span>}
+                <div className="flex flex-col items-center border border-[#0a0a0a]/10 bg-white/80 px-4 py-3 min-w-[60px]">
+                  <span className="font-display text-[#0a0a0a] text-2xl leading-none tabular-nums">{v}</span>
+                  <span className="text-[#0a0a0a]/30 text-[8px] tracking-[0.2em] uppercase mt-1">{l}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <a href="#shop" className="btn-gold px-10 py-4 text-[10px] tracking-[0.25em] mt-2">
+          Comprar ahora — 18€
+        </a>
       </div>
     </div>
   );
 }
 
-
 // ═══════════════════════════════════════════════════════════
-// COMPONENTE PRINCIPAL
+// EXPORT
 // ═══════════════════════════════════════════════════════════
 export default function ScrollScenes() {
-  const [scrollY, setScrollY] = useState(0);
-  const [vh, setVh]           = useState(800);
-  const [isMobile, setIsMobile] = useState(false);
-  const rafRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const measure = () => {
-      setVh(window.innerHeight);
-      setIsMobile(window.innerWidth < 1024);
-    };
-    measure();
-    window.addEventListener("resize", measure);
-
-    const onScroll = () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(() => setScrollY(window.scrollY));
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", measure);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
-
-  // ── En móvil: escenas apiladas normales ──────────────────
-  if (isMobile) {
-    return (
-      <>
-        <div className="relative w-full" style={{ height: "100svh" }}><SceneHero /></div>
-        <div className="relative w-full" style={{ height: "100svh" }}><SceneCountdown /></div>
-      </>
-    );
-  }
-
-  // ── Desktop: sticky crossfade ─────────────────────────────
-  const scenes = [
-    <SceneHero        key="hero" />,
-    <SceneCountdown   key="countdown" />,
-  ];
-
-  // Escena 0: activa desde el inicio (p=0), se desvanece según FADE_OUT
-  // El resto usan computeSceneStyle con solapamiento
-  function styleFor(index: number): CSSProperties {
-    if (index === 0) {
-      const p = scrollY / vh;
-      let opacity = 1, blur = 0, scale = 1;
-      if (p > FADE_OUT) {
-        const t = easeInOut((p - FADE_OUT) / (1 - FADE_OUT));
-        opacity = lerp(1, 0, t);
-        blur    = lerp(0, 24, t);
-        scale   = lerp(1, 0.94, t);
-      }
-      return {
-        opacity,
-        transform: `scale(${scale.toFixed(4)})`,
-        filter: blur > 0.2 ? `blur(${blur.toFixed(2)}px)` : "none",
-        pointerEvents: opacity > 0.05 ? "auto" : "none",
-        zIndex: 10,
-      };
-    }
-    return computeSceneStyle(scrollY, index, vh);
-  }
-
   return (
     <>
-      {/* Spacer: SCENE_COUNT * vh da scroll total suficiente */}
-      <div style={{ height: `${SCENE_COUNT * vh}px` }}>
-        <div className="sticky top-0 overflow-hidden bg-black" style={{ height: `${vh}px` }}>
-          {scenes.map((scene, i) => (
-            <SceneSlot key={i} style={styleFor(i)}>
-              {scene}
-            </SceneSlot>
-          ))}
-        </div>
-      </div>
+      <SceneHero />
+      <SceneCountdown />
 
-      {/* Keyframe para scroll indicator */}
       <style>{`
         @keyframes scrollLine {
           0%   { transform: translateY(-100%); opacity: 1; }
