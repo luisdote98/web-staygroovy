@@ -15,7 +15,7 @@ import { Mail } from "lucide-react";
 import Link from "next/link";
 
 // ─── Configuración ─────────────────────────────────────────
-const SCENE_COUNT = 10;
+const SCENE_COUNT = 8;
 
 const OVERLAP  = 0.20;  // fracción de solapamiento con escena anterior
 const FADE_OUT = 0.80;  // punto desde el que empieza el fade de salida
@@ -190,89 +190,7 @@ function SceneCountdown() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// SCENE 2 — Launch / First Drop editorial
-// ═══════════════════════════════════════════════════════════
-function SceneLaunch() {
-  return (
-    <div className="relative w-full h-full bg-[#0a0a0a] overflow-hidden">
-      <div aria-hidden className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 60% 55% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%)" }} />
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 max-w-5xl w-full items-center">
-          <div className="flex flex-col gap-6">
-            <p className="text-[#c9a84c] text-[10px] tracking-[0.35em] uppercase">Drop · Primer mes</p>
-            <h2 className="font-display text-white leading-none" style={{ fontSize: "clamp(3rem, 8vw, 6rem)" }}>
-              DEL BOOTH<br />A TU ARMARIO.
-            </h2>
-            <div className="w-10 h-0.5 bg-[#c9a84c]" />
-            <p className="text-white/40 text-sm leading-relaxed max-w-sm">
-              Una camiseta pensada para el club. Válida para la calle. Stay Groovy First Drop.
-            </p>
-            <div className="flex items-end gap-3 mt-2">
-              <span className="font-display text-white text-5xl leading-none">18€</span>
-              <div className="pb-1">
-                <span className="text-white/25 text-lg line-through block leading-none">22€</span>
-                <span className="text-[#c9a84c] text-[9px] tracking-widest uppercase">lanzamiento</span>
-              </div>
-            </div>
-            <button onClick={() => window.scrollTo({ top: 4 * window.innerHeight, behavior: "smooth" })}
-              className="btn-gold self-start px-8 py-4 text-[10px] tracking-[0.25em]">
-              Ver colección →
-            </button>
-          </div>
-          <div className="hidden lg:flex justify-center">
-            <div className="relative w-72 h-80 border border-[#c9a84c]/20">
-              <Image src="/products/tee-black-product.png" alt="Stay Groovy Tee" fill className="object-contain p-6" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// SCENE 3 — Shop Intro
-// ═══════════════════════════════════════════════════════════
-function SceneShopIntro() {
-  return (
-    <div className="relative w-full h-full bg-[#0a0a0a] overflow-hidden">
-      <div aria-hidden className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 80% 60% at 50% 60%, rgba(201,168,76,0.05) 0%, transparent 65%)" }} />
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
-        <div className="flex flex-col items-center text-center gap-8 max-w-2xl">
-          <p className="text-[#c9a84c] text-[10px] tracking-[0.4em] uppercase">Colección SS26</p>
-          <h2 className="font-display text-white leading-none" style={{ fontSize: "clamp(3.5rem, 10vw, 8rem)" }}>
-            SHOP
-          </h2>
-          <div className="flex gap-4 justify-center">
-            {[
-              "/products/tee-black-product.png",
-              "/products/tee-white-product.png",
-              "/products/top-black-product.png",
-            ].map((src, i) => (
-              <div key={i}
-                className="relative border border-[#c9a84c]/20 bg-[#111]"
-                style={{ width: i === 1 ? "120px" : "90px", height: i === 1 ? "150px" : "112px", marginTop: i === 1 ? "-20px" : "0" }}>
-                <Image src={src} alt="producto" fill className="object-contain p-3" />
-              </div>
-            ))}
-          </div>
-          <p className="text-white/35 text-xs tracking-[0.2em] uppercase">
-            Camisetas oversize · Tops mujer · Edición limitada
-          </p>
-          <button onClick={() => window.scrollTo({ top: 4 * window.innerHeight, behavior: "smooth" })}
-            className="btn-gold px-12 py-4 text-[10px] tracking-[0.3em]">
-            Explorar colección
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// SCENE 4 — Product Grid
+// SCENE 2 — Product Grid
 // ═══════════════════════════════════════════════════════════
 type Filter = "all" | "tee" | "top";
 const FILTERS: { id: Filter; label: string }[] = [
@@ -623,8 +541,6 @@ export default function ScrollScenes() {
       <>
         <div className="relative w-full" style={{ height: "100svh" }}><SceneHero /></div>
         <div className="relative w-full" style={{ height: "100svh" }}><SceneCountdown /></div>
-        <div className="relative w-full" style={{ height: "100svh" }}><SceneLaunch /></div>
-        <div className="relative w-full" style={{ height: "100svh" }}><SceneShopIntro /></div>
         <div className="relative w-full" style={{ height: "100svh" }}><SceneProductGrid /></div>
         <div className="relative w-full" style={{ height: "100svh" }}><SceneWomen /></div>
         <div className="relative w-full" style={{ height: "100svh" }}><SceneAbout /></div>
@@ -639,8 +555,6 @@ export default function ScrollScenes() {
   const scenes = [
     <SceneHero         key="hero" />,
     <SceneCountdown    key="countdown" />,
-    <SceneLaunch       key="launch" />,
-    <SceneShopIntro    key="shopintro" />,
     <SceneProductGrid  key="productgrid" />,
     <SceneWomen        key="women" />,
     <SceneAbout        key="about" />,
