@@ -1,6 +1,12 @@
 import Image from "next/image";
 import Reveal from "./Reveal";
 
+const PARRAFOS = [
+  "Nacemos en Granada con una visión clara: crear ropa que represente nuestra identidad dentro de la cultura de club.",
+  "Cada pieza está pensada para quienes viven la música desde dentro.",
+  "Nuestro logo es el núcleo de todo. Evoluciona con cada drop: nuevos colores, formas 3D y colaboraciones exclusivas.",
+];
+
 export default function AboutSection() {
   return (
     <div id="sobre-nosotros" className="bg-white border-b border-[#e5e5e5] scene-center" style={{ minHeight: "100vh" }}>
@@ -28,8 +34,7 @@ export default function AboutSection() {
             <div className="h-px bg-[#e5e5e5]" />
             <Reveal variant="text" delay={180}>
               <div className="flex flex-col gap-4 text-[#0a0a0a]/55 text-sm leading-relaxed max-w-lg">
-                <p>Stay Groovy nace en Granada con una visión clara: crear una marca de ropa que refleje nuestra identidad dentro de la cultura de club. Cada pieza está pensada para quien vive la música desde dentro.</p>
-                <p>Nuestro logo es el núcleo de todo. Lo entendemos como algo vivo, en constante evolución — nuevos colores, formas 3D, colaboraciones y detalles que irán apareciendo con cada drop.</p>
+                {PARRAFOS.map((p, i) => <p key={i}>{p}</p>)}
               </div>
             </Reveal>
             <div className="h-px bg-[#e5e5e5]" />
@@ -38,15 +43,6 @@ export default function AboutSection() {
                 <p className="text-[#0a0a0a] text-base font-medium leading-snug">"Cada colección, una experiencia diferente."</p>
                 <cite className="text-[#0a0a0a]/35 text-[11px] tracking-[0.15em] uppercase not-italic mt-1 block">— Stay Groovy, Granada</cite>
               </blockquote>
-            </Reveal>
-            <Reveal variant="action" delay={420}>
-              <div className="flex items-center gap-3 pt-2">
-                <Image src="/logos/logo-hat.png" alt="" width={40} height={40} className="w-9 h-9 object-contain opacity-30" />
-                <div>
-                  <p className="text-[#0a0a0a]/25 text-[10px] tracking-[0.2em] uppercase">Contacto</p>
-                  <a href="mailto:staygroovy.duo@gmail.com" className="text-[#c9a84c] text-xs hover:text-[#b8943d] transition-colors">staygroovy.duo@gmail.com</a>
-                </div>
-              </div>
             </Reveal>
           </div>
         </div>
@@ -60,8 +56,7 @@ export default function AboutSection() {
           <div className="h-px bg-[#e5e5e5]" />
           <Reveal variant="text" delay={180}>
             <div className="flex flex-col gap-4 text-[#0a0a0a]/55 text-sm leading-relaxed">
-              <p>Stay Groovy nace en Granada con una visión clara: crear una marca de ropa que refleje nuestra identidad dentro de la cultura de club. Cada pieza está pensada para quien vive la música desde dentro.</p>
-              <p>Nuestro logo es el núcleo de todo. Lo entendemos como algo vivo, en constante evolución — nuevos colores, formas 3D, colaboraciones y detalles que irán apareciendo con cada drop.</p>
+              {PARRAFOS.map((p, i) => <p key={i}>{p}</p>)}
             </div>
           </Reveal>
           <Reveal variant="image" delay={60} threshold={0.06}>
@@ -82,15 +77,6 @@ export default function AboutSection() {
               <p className="text-[#0a0a0a] text-base font-medium leading-snug">"Cada colección, una experiencia diferente."</p>
               <cite className="text-[#0a0a0a]/35 text-[11px] tracking-[0.15em] uppercase not-italic mt-1 block">— Stay Groovy, Granada</cite>
             </blockquote>
-          </Reveal>
-          <Reveal variant="action" delay={420}>
-            <div className="flex items-center gap-3 pt-2">
-              <Image src="/logos/logo-hat.png" alt="" width={40} height={40} className="w-9 h-9 object-contain opacity-30" />
-              <div>
-                <p className="text-[#0a0a0a]/25 text-[10px] tracking-[0.2em] uppercase">Contacto</p>
-                <a href="mailto:staygroovy.duo@gmail.com" className="text-[#c9a84c] text-xs hover:text-[#b8943d] transition-colors">staygroovy.duo@gmail.com</a>
-              </div>
-            </div>
           </Reveal>
         </div>
 
