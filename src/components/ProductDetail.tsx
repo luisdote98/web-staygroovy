@@ -197,34 +197,35 @@ export default function ProductDetail({ product }: { product: Product }) {
                 </button>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* ── Botón añadir al carrito — ancho completo ── */}
-        <button
-          onClick={addToCart}
-          className={`mt-4 flex items-center justify-center gap-2 w-full py-4 text-[12px] lg:text-[13px] tracking-[0.25em] uppercase font-display transition-all duration-200 ${
-            added ? "bg-transparent border border-[#c9a84c]/40 text-[#c9a84c]"
-            : sizeErr ? "bg-transparent border border-red-500/40 text-red-400"
-            : "bg-[#c9a84c] text-[#0a0a0a] hover:bg-[#e2c97e]"
-          }`}
-        >
-          <ShoppingBag className="w-4 h-4" />
-          {added ? "Añadido al carrito ✓" : "Añadir al carrito"}
-        </button>
+            {/* ── Botón añadir al carrito ── */}
+            <button
+              onClick={addToCart}
+              className={`flex items-center justify-center gap-2 w-full py-3 lg:py-4 text-[11px] lg:text-[13px] tracking-[0.25em] uppercase font-display transition-all duration-200 ${
+                added ? "bg-transparent border border-[#c9a84c]/40 text-[#c9a84c]"
+                : sizeErr ? "bg-transparent border border-red-500/40 text-red-400"
+                : "bg-[#c9a84c] text-[#0a0a0a] hover:bg-[#e2c97e]"
+              }`}
+            >
+              <ShoppingBag className="w-4 h-4" />
+              {added ? "Añadido ✓" : "Añadir al carrito"}
+            </button>
 
-        {/* ── Instrucciones de cuidado ── */}
-        <div className="mt-6 border border-white/10 rounded-xl p-4">
-          <p className="text-[#c9a84c] text-[9px] tracking-[0.3em] uppercase text-center mb-4 font-medium">
-            Instrucciones de cuidado
-          </p>
-          <div className="grid grid-cols-5 gap-2">
-            {CARE_ICONS.map(({ svg, label }) => (
-              <div key={label} className="flex flex-col items-center gap-1.5">
-                <span className="text-white/60">{svg}</span>
-                <span className="text-[7px] lg:text-[9px] text-white/35 tracking-[0.08em] uppercase text-center leading-tight">{label}</span>
+            {/* ── Instrucciones de cuidado ── */}
+            <div className="border border-white/10 rounded-xl p-3 lg:p-5">
+              <p className="text-[#c9a84c] text-[8px] lg:text-[10px] tracking-[0.3em] uppercase text-center mb-3 lg:mb-4 font-medium">
+                Instrucciones de cuidado
+              </p>
+              <div className="grid grid-cols-5 gap-1 lg:gap-2">
+                {CARE_ICONS.map(({ svg, label }) => (
+                  <div key={label} className="flex flex-col items-center gap-1 lg:gap-1.5">
+                    <span className="text-white/60">{svg}</span>
+                    <span className="text-[6px] lg:text-[8px] text-white/35 tracking-[0.06em] uppercase text-center leading-tight">{label}</span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+
           </div>
         </div>
 
