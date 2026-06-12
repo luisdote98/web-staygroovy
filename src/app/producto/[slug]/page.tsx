@@ -22,7 +22,7 @@ export default async function ProductPage({ params }: Props) {
     <>
       <Header />
       <CartSidebar />
-      <main className="pt-20 min-h-screen bg-[#0a0a0a]">
+      <main className="pt-[72px] min-h-screen bg-[#0a0a0a]">
         <ProductDetail product={product} />
       </main>
       <Footer />
