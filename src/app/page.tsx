@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import ScrollScenes from "@/components/ScrollScenes";
-import ProductGrid from "@/components/ProductGrid";
-import WomenSection from "@/components/WomenSection";
+import CategorySection from "@/components/CategorySection";
 import AboutSection from "@/components/AboutSection";
 import CareInstructions from "@/components/CareInstructions";
 import ContactSection from "@/components/ContactSection";
@@ -14,12 +13,13 @@ export default function Home() {
       <Header />
       <CartSidebar />
       <main>
-        {/* ── Bloque cinematográfico: 4 escenas en sticky crossfade ── */}
+        {/* Hero + Countdown */}
         <ScrollScenes />
 
-        {/* ── Ecommerce normal: scroll libre ── */}
-        <ProductGrid />
-        <WomenSection />
+        {/* Bloques de categoría: foto modelo + botón shop */}
+        <CategorySection />
+
+        {/* Resto de secciones */}
         <AboutSection />
         <CareInstructions />
         <ContactSection />
