@@ -37,10 +37,10 @@ function ShopCard({ product }: { product: (typeof products)[number] }) {
       {/* Imagen */}
       <Link href={`/producto/${product.slug}`} className="relative block overflow-hidden bg-[#f5f5f5]" style={{ aspectRatio: "3/4" }}>
         <Image
-          src={product.images.model}
+          src={product.id === "top-black" ? product.images.model : product.images.product}
           alt={product.nameEs}
           fill
-          className="object-cover object-top"
+          className={product.id === "top-black" ? "object-cover object-top" : "object-contain p-6"}
           sizes="(max-width: 1024px) 50vw, 33vw"
         />
         {/* Badges */}
