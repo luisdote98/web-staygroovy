@@ -1,11 +1,42 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-import { X, Plus, Minus, ShoppingBag } from "lucide-react";
+import { X, Plus, Minus, ShoppingBag, Loader2 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
+import type { CheckoutRequestItem } from "@/app/api/checkout/route";
 
 export default function CartSidebar() {
   const { state, dispatch, totalItems, totalPrice } = useCart();
+  const [loading, setLoading] = useState(false);
+  const [error,   setError]   = useState<string | null>(null);
+
+  async function handleCheckout() {
+    setLoading(true);
+    setError(null);
+    try {
+      const items: CheckoutRequestItem[] = state.items.map((i) => ({
+        productId: i.product.id,
+        size: i.size,
+        quantity: i.quantity,
+      }));
+
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Error al iniciar el pago");
+
+      // Redirigir a Stripe Checkout
+      window.location.href = data.url;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error inesperado");
+      setLoading(false);
+    }
+  }
 
   return (
     <>
@@ -104,9 +135,28 @@ export default function CartSidebar() {
               <span className="font-display text-2xl tracking-wider text-[#c9a84c]">{totalPrice}€</span>
             </div>
             <p className="text-[#0a0a0a]/25 text-[10px] text-center">IVA incluido · Precio de lanzamiento</p>
-            <button className="btn-gold w-full py-4 text-[11px] tracking-[0.2em]">
-              Finalizar pedido
+
+            {error && (
+              <p className="text-red-500 text-[11px] text-center bg-red-50 border border-red-200 px-3 py-2 rounded">
+                {error}
+              </p>
+            )}
+
+            <button
+              onClick={handleCheckout}
+              disabled={loading}
+              className="btn-gold w-full py-4 text-[11px] tracking-[0.2em] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Redirigiendo...
+                </>
+              ) : (
+                "PAGAR AHORA"
+              )}
             </button>
+
             <button
               onClick={() => dispatch({ type: "CLOSE_CART" })}
               className="w-full py-2.5 text-[11px] text-[#0a0a0a]/30 hover:text-[#0a0a0a] tracking-[0.15em] uppercase transition-colors"
