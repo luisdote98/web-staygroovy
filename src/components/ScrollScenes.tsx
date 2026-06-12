@@ -123,7 +123,7 @@ function SceneCountdown() {
           {info}
         </div>
         {/* Derecha — video */}
-        <div className="relative overflow-hidden bg-[#f5f5f5]">
+        <div className="relative overflow-hidden bg-white">
           <video autoPlay muted loop playsInline
             className="absolute inset-0 w-full h-full"
             style={{ objectFit: "contain", objectPosition: "center" }}>
