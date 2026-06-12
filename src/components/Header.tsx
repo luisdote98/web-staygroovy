@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { ShoppingCart, Menu, X } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 
 const NAV = [
@@ -47,16 +47,26 @@ export default function Header() {
             />
           </Link>
 
+          {/* Desktop: todos los links */}
           <nav className="hidden lg:flex items-center gap-10">
             {NAV.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="text-[11px] tracking-[0.18em] uppercase text-white/55 hover:text-[#c9a84c] transition-colors duration-200 font-medium"
-              >
+              <Link key={l.href} href={l.href}
+                className="text-[11px] tracking-[0.18em] uppercase text-white/55 hover:text-[#c9a84c] transition-colors duration-200 font-medium">
                 {l.label}
               </Link>
             ))}
+          </nav>
+
+          {/* Móvil: solo Shop y Contacto */}
+          <nav className="flex lg:hidden items-center gap-5">
+            <Link href="/shop"
+              className="text-[11px] tracking-[0.18em] uppercase text-white/60 hover:text-[#c9a84c] transition-colors font-medium">
+              Shop
+            </Link>
+            <Link href="/#contacto"
+              className="text-[11px] tracking-[0.18em] uppercase text-white/60 hover:text-[#c9a84c] transition-colors font-medium">
+              Contacto
+            </Link>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -65,7 +75,7 @@ export default function Header() {
               className="relative p-2 text-white/60 hover:text-[#c9a84c] transition-colors"
               aria-label="Carrito"
             >
-              <ShoppingBag className="w-[22px] h-[22px]" />
+              <ShoppingCart className="w-[22px] h-[22px]" />
               {totalItems > 0 && (
                 <span className="absolute top-0.5 right-0.5 bg-[#c9a84c] text-[#0a0a0a] text-[9px] font-bold rounded-full w-[16px] h-[16px] flex items-center justify-center leading-none">
                   {totalItems}
