@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Minus, Plus, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Minus, Plus, ShoppingBag, X, ZoomIn } from "lucide-react";
 import type { Product } from "@/lib/products";
 import { useCart } from "@/lib/cart-context";
 
@@ -52,6 +52,7 @@ const CARE_ICONS = [
 export default function ProductDetail({ product }: { product: Product }) {
   const images = [product.images.product, product.images.model];
   const [activeIdx, setActiveIdx] = useState(0);
+  const [lightbox,  setLightbox]  = useState(false);
   const [size,      setSize]      = useState("");
   const [qty,       setQty]       = useState(1);
   const [added,     setAdded]     = useState(false);
@@ -83,20 +84,27 @@ export default function ProductDetail({ product }: { product: Product }) {
 
           {/* Columna imagen */}
           <div className="flex flex-col gap-2">
-            <div className="relative w-full overflow-hidden border border-[#c9a84c]/30 bg-white" style={{ aspectRatio: "3/4" }}>
+            <button
+              onClick={() => setLightbox(true)}
+              className="group relative w-full overflow-hidden border border-[#c9a84c]/30 bg-white cursor-zoom-in"
+              style={{ aspectRatio: "3/4" }}
+            >
               <Image
                 src={images[activeIdx]}
                 alt={product.nameEs}
                 fill
                 priority
-                className={activeIdx === 0 ? "object-contain p-3 lg:p-8" : "object-cover object-top"}
+                className={activeIdx === 0 ? "object-contain p-3 lg:p-8 transition-transform duration-300 group-hover:scale-105" : "object-cover object-top transition-transform duration-300 group-hover:scale-105"}
               />
               {product.isLaunch && (
                 <span className="absolute top-2 left-2 bg-[#c9a84c] text-[#0a0a0a] text-[7px] lg:text-[9px] font-bold tracking-[0.15em] uppercase px-2 py-0.5">
                   Launch Price
                 </span>
               )}
-            </div>
+              <span className="absolute bottom-2 right-2 bg-black/50 text-white/70 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <ZoomIn className="w-3.5 h-3.5" />
+              </span>
+            </button>
 
             {/* Thumbnails */}
             <div className="grid grid-cols-2 gap-1.5">
@@ -227,6 +235,54 @@ export default function ProductDetail({ product }: { product: Product }) {
         </div>
 
       </div>
+
+      {/* ── Lightbox ── */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+          onClick={() => setLightbox(false)}
+        >
+          {/* Botón cerrar */}
+          <button
+            onClick={() => setLightbox(false)}
+            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
+            aria-label="Cerrar"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          {/* Imagen ampliada */}
+          <div
+            className="relative w-full max-w-lg max-h-[85vh] aspect-square"
+            onClick={e => e.stopPropagation()}
+          >
+            <Image
+              src={images[activeIdx]}
+              alt={product.nameEs}
+              fill
+              className={activeIdx === 0 ? "object-contain" : "object-contain"}
+              sizes="90vw"
+            />
+          </div>
+
+          {/* Navegación entre imágenes dentro del lightbox */}
+          {images.length > 1 && (
+            <div className="absolute bottom-6 flex gap-3">
+              {images.map((src, i) => (
+                <button
+                  key={i}
+                  onClick={e => { e.stopPropagation(); setActiveIdx(i); }}
+                  className={`relative w-14 h-14 overflow-hidden border-2 transition-all ${
+                    activeIdx === i ? "border-[#c9a84c]" : "border-white/20 opacity-50 hover:opacity-80"
+                  }`}
+                >
+                  <Image src={src} alt="" fill className={i === 0 ? "object-contain bg-white p-1" : "object-cover object-top"} />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
