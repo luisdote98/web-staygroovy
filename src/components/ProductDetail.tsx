@@ -3,26 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Minus, Plus, ShoppingBag, ChevronDown } from "lucide-react";
+import { ArrowLeft, Minus, Plus, ShoppingBag } from "lucide-react";
 import type { Product } from "@/lib/products";
 import { useCart } from "@/lib/cart-context";
-
-// ── Acordeón ────────────────────────────────────────────────
-function Accordion({ title, children }: { title: string; children: React.ReactNode }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border-t border-white/10">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between py-3 text-left"
-      >
-        <span className="text-white/50 text-[10px] tracking-[0.25em] uppercase font-medium">{title}</span>
-        <ChevronDown className={`w-3.5 h-3.5 text-white/30 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && <div className="pb-4">{children}</div>}
-    </div>
-  );
-}
 
 // ── Iconos SVG cuidados ─────────────────────────────────────
 const CARE_ICONS = [
@@ -52,7 +35,8 @@ const CARE_ICONS = [
     label: "Baja temp.",
     svg: <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" className="w-6 h-6">
       <path d="M6 19 Q6 14 12 14 L24 14 Q27 14 27 17 L27 20 Q27 22 25 22 L8 22 Q6 22 6 20 Z"/>
-      <path d="M10 22 L10 25"/><text x="16" y="20" textAnchor="middle" fontSize="6" fill="currentColor" stroke="none">•</text>
+      <path d="M10 22 L10 25"/>
+      <text x="16" y="20" textAnchor="middle" fontSize="6" fill="currentColor" stroke="none">•</text>
     </svg>
   },
   {
@@ -82,34 +66,24 @@ export default function ProductDetail({ product }: { product: Product }) {
   }
 
   const categoryLabel = product.category === "tee" ? "Camiseta Oversize" : "Top Mujer";
-  const features = product.category === "top"
-    ? [{ e: "🧵", l: "Tela\nelástica" }, { e: "✂️", l: "Ajuste\nceñido" }, { e: "🚚", l: "Envío\n24-48h" }, { e: "🔄", l: "Cambios\nfáciles" }]
-    : [{ e: "🌿", l: "100%\nalgodón" }, { e: "👕", l: "Fit\noversize" }, { e: "🚚", l: "Envío\n24-48h" }, { e: "🔄", l: "Cambios\nfáciles" }];
 
   return (
     <div className="bg-[#0a0a0a] min-h-screen">
       <div className="max-w-5xl mx-auto px-4">
 
-        {/* ── Volver ── */}
+        {/* Volver */}
         <div className="pt-4 pb-3">
           <Link href="/shop" className="inline-flex items-center gap-1.5 text-[#c9a84c] text-[10px] tracking-[0.2em] uppercase font-medium hover:opacity-70 transition-opacity">
             <ArrowLeft className="w-3 h-3" /> Volver al shop
           </Link>
         </div>
 
-        {/* ══════════════════════════════════════════════════
-            MÓVIL: 2 columnas compactas
-            DESKTOP: 2 columnas grandes
-        ══════════════════════════════════════════════════ */}
+        {/* ── Grid 2 columnas: imagen | info ── */}
         <div className="grid grid-cols-[45%_55%] gap-3 lg:grid-cols-2 lg:gap-16">
 
-          {/* ── Columna imagen ── */}
+          {/* Columna imagen */}
           <div className="flex flex-col gap-2">
-            {/* Imagen principal */}
-            <div
-              className="relative w-full overflow-hidden border border-[#c9a84c]/30 bg-white"
-              style={{ aspectRatio: "3/4" }}
-            >
+            <div className="relative w-full overflow-hidden border border-[#c9a84c]/30 bg-white" style={{ aspectRatio: "3/4" }}>
               <Image
                 src={images[activeIdx]}
                 alt={product.nameEs}
@@ -150,8 +124,8 @@ export default function ProductDetail({ product }: { product: Product }) {
             </div>
           </div>
 
-          {/* ── Columna info ── */}
-          <div className="flex flex-col gap-2.5 lg:gap-5">
+          {/* Columna info */}
+          <div className="flex flex-col gap-2.5 lg:gap-4">
 
             {/* Categoría · Color */}
             <p className="text-[#c9a84c] text-[9px] lg:text-[11px] tracking-[0.25em] uppercase font-medium leading-none">
@@ -159,7 +133,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             </p>
 
             {/* Nombre */}
-            <h1 className="font-display text-white leading-none text-[1.4rem] lg:text-[3rem]">
+            <h1 className="font-display text-white leading-none text-[1.4rem] lg:text-[2.8rem]">
               {product.nameEs.toUpperCase()}
             </h1>
 
@@ -173,6 +147,9 @@ export default function ProductDetail({ product }: { product: Product }) {
                 <span className="text-[#c9a84c] text-[8px] tracking-[0.2em] uppercase">Precio lanzamiento</span>
               </div>
             </div>
+
+            {/* Descripción */}
+            <p className="text-white/65 text-[11px] lg:text-sm leading-relaxed">{product.description}</p>
 
             {/* Talla */}
             <div>
@@ -212,62 +189,39 @@ export default function ProductDetail({ product }: { product: Product }) {
                 </button>
               </div>
             </div>
-
-            {/* CTA */}
-            <button
-              onClick={addToCart}
-              className={`flex items-center justify-center gap-2 w-full py-3 lg:py-4 text-[11px] lg:text-[13px] tracking-[0.25em] uppercase font-display transition-all duration-200 ${
-                added ? "bg-transparent border border-[#c9a84c]/40 text-[#c9a84c]"
-                : sizeErr ? "bg-transparent border border-red-500/40 text-red-400"
-                : "bg-[#c9a84c] text-[#0a0a0a] hover:bg-[#e2c97e]"
-              }`}
-            >
-              <ShoppingBag className="w-4 h-4" />
-              {added ? "Añadido ✓" : "Añadir al carrito"}
-            </button>
-
-            {/* Características — solo desktop (en móvil van abajo) */}
-            <div className="hidden lg:grid grid-cols-4 border border-white/10 rounded-xl overflow-hidden">
-              {features.map(({ e, l }, i) => (
-                <div key={i} className={`flex flex-col items-center gap-2 py-4 px-2 ${i < 3 ? "border-r border-white/10" : ""}`}>
-                  <span className="text-xl">{e}</span>
-                  <span className="text-[9px] text-white/45 tracking-[0.1em] uppercase text-center leading-tight whitespace-pre-line">{l}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 
-        {/* ── Características móvil (debajo del grid) ── */}
-        <div className="mt-3 grid grid-cols-4 border border-white/10 rounded-xl overflow-hidden lg:hidden">
-          {features.map(({ e, l }, i) => (
-            <div key={i} className={`flex flex-col items-center gap-1 py-3 px-1 ${i < 3 ? "border-r border-white/10" : ""}`}>
-              <span className="text-lg">{e}</span>
-              <span className="text-[8px] text-white/45 tracking-[0.08em] uppercase text-center leading-tight whitespace-pre-line">{l}</span>
-            </div>
-          ))}
+        {/* ── Botón añadir al carrito — ancho completo ── */}
+        <button
+          onClick={addToCart}
+          className={`mt-4 flex items-center justify-center gap-2 w-full py-4 text-[12px] lg:text-[13px] tracking-[0.25em] uppercase font-display transition-all duration-200 ${
+            added ? "bg-transparent border border-[#c9a84c]/40 text-[#c9a84c]"
+            : sizeErr ? "bg-transparent border border-red-500/40 text-red-400"
+            : "bg-[#c9a84c] text-[#0a0a0a] hover:bg-[#e2c97e]"
+          }`}
+        >
+          <ShoppingBag className="w-4 h-4" />
+          {added ? "Añadido al carrito ✓" : "Añadir al carrito"}
+        </button>
+
+        {/* ── Instrucciones de cuidado ── */}
+        <div className="mt-6 border border-white/10 rounded-xl p-4">
+          <p className="text-[#c9a84c] text-[9px] tracking-[0.3em] uppercase text-center mb-4 font-medium">
+            Instrucciones de cuidado
+          </p>
+          <div className="grid grid-cols-5 gap-2">
+            {CARE_ICONS.map(({ svg, label }) => (
+              <div key={label} className="flex flex-col items-center gap-1.5">
+                <span className="text-white/60">{svg}</span>
+                <span className="text-[7px] lg:text-[9px] text-white/35 tracking-[0.08em] uppercase text-center leading-tight">{label}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* ── Acordeones ── */}
-        <div className="mt-3">
-          <Accordion title="Descripción">
-            <p className="text-white/55 text-xs leading-relaxed">{product.description}</p>
-          </Accordion>
-
-          <Accordion title="Instrucciones de cuidado">
-            <div className="grid grid-cols-5 gap-2 pt-1">
-              {CARE_ICONS.map(({ svg, label }) => (
-                <div key={label} className="flex flex-col items-center gap-1.5">
-                  <span className="text-white/60">{svg}</span>
-                  <span className="text-[7px] text-white/35 tracking-[0.08em] uppercase text-center leading-tight">{label}</span>
-                </div>
-              ))}
-            </div>
-          </Accordion>
-        </div>
-
-        {/* ── Mini footer ── */}
-        <div className="mt-6 pb-8 flex flex-col items-center gap-2 border-t border-white/[0.06] pt-5">
+        {/* Mini footer */}
+        <div className="mt-6 pb-8 pt-5 border-t border-white/[0.06] flex flex-col items-center gap-2">
           <p className="text-white/20 text-[10px] tracking-[0.3em] uppercase">Club Culture, Cotton and Movement.</p>
           <span className="text-[#c9a84c]">★</span>
         </div>
