@@ -65,8 +65,8 @@ export default function AboutSection() {
             </div>
           </Reveal>
           <Reveal variant="image" delay={60} threshold={0.06}>
-            <div className="relative w-full aspect-[16/9] overflow-hidden rounded-sm bg-[#f5f5f5]">
-              <Image src="/models/model-tee-side.jpg" alt="Stay Groovy" fill className="object-cover object-center"
+            <div className="relative w-full aspect-[3/4] overflow-hidden rounded-sm bg-[#f5f5f5]">
+              <Image src="/models/model-tee-side.jpg" alt="Stay Groovy" fill className="object-contain"
                 sizes="100vw" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pt-16 pb-6 flex justify-center">
                 <div className="text-center">
