@@ -35,13 +35,13 @@ function ShopCard({ product }: { product: (typeof products)[number] }) {
   return (
     <article className="flex flex-col">
       {/* Imagen */}
-      <Link href={`/producto/${product.slug}`} className="relative block overflow-hidden bg-[#f5f5f5]" style={{ aspectRatio: "3/4" }}>
+      <Link href={`/producto/${product.slug}`} className="relative block overflow-hidden bg-white border border-[#c9a84c]/40" style={{ aspectRatio: "3/4" }}>
         <Image
           src={product.id === "top-black" ? product.images.model : product.images.product}
           alt={product.nameEs}
           fill
-          className={product.id === "top-black" ? "object-cover object-top" : "object-contain p-6"}
-          sizes="(max-width: 1024px) 50vw, 33vw"
+          className={product.id === "top-black" ? "object-cover object-top" : "object-contain p-3"}
+          sizes="(max-width: 768px) 50vw, (max-width: 1280px) 25vw, 20vw"
         />
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1">
@@ -125,9 +125,9 @@ function ShopGrid() {
         <p className="text-xs text-[#0a0a0a]/40 tracking-[0.15em]">{visible.length} productos</p>
       </div>
 
-      {/* Grid 2 columnas */}
+      {/* Grid: 2 col móvil, 4 col desktop */}
       <div className="px-4 lg:px-8 py-6">
-        <div className="grid grid-cols-2 gap-x-3 gap-y-8 lg:gap-x-6 lg:gap-y-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-8 lg:gap-x-5 lg:gap-y-10">
           {visible.map(product => (
             <ShopCard key={product.id} product={product} />
           ))}
