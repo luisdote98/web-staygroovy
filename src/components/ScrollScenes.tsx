@@ -63,48 +63,75 @@ function SceneCountdown() {
   const [time, setTime] = useState(getTimeLeft());
   useEffect(() => { const id = setInterval(() => setTime(getTimeLeft()), 1000); return () => clearInterval(id); }, []);
 
-  return (
-    <div className="relative w-full bg-white overflow-hidden py-20 lg:py-28">
-      {/* video de fondo de camiseta */}
-      <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full opacity-10"
-        style={{ objectFit: "contain", objectPosition: "center" }}>
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
-      <div className="relative flex flex-col items-center text-center gap-6 max-w-lg mx-auto px-6">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-px bg-[#c9a84c]" />
-          <p className="text-[#c9a84c] text-[10px] tracking-[0.35em] uppercase font-medium">First Drop · Primer mes</p>
-          <div className="w-8 h-px bg-[#c9a84c]" />
-        </div>
-        <div className="flex items-end gap-4">
-          <span className="font-display text-[#0a0a0a] leading-none" style={{ fontSize: "clamp(5rem, 14vw, 9rem)" }}>18€</span>
-          <div className="pb-3">
-            <span className="block text-[#0a0a0a]/20 text-2xl line-through leading-none">22€</span>
-            <span className="text-[#c9a84c] text-[9px] tracking-[0.3em] uppercase">después</span>
-          </div>
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-[#0a0a0a]/30 text-[9px] tracking-[0.3em] uppercase">Finaliza en</p>
-          <div className="flex items-center gap-2">
-            {[
-              { v: pad(time.days),    l: "Días" },
-              { v: pad(time.hours),   l: "Horas" },
-              { v: pad(time.minutes), l: "Min" },
-            ].map(({ v, l }, i) => (
-              <div key={l} className="flex items-center gap-2">
-                {i > 0 && <span className="text-[#c9a84c]/40 font-display text-2xl pb-2">:</span>}
-                <div className="flex flex-col items-center border border-[#0a0a0a]/10 bg-white/80 px-4 py-3 min-w-[60px]">
-                  <span className="font-display text-[#0a0a0a] text-2xl leading-none tabular-nums">{v}</span>
-                  <span className="text-[#0a0a0a]/30 text-[8px] tracking-[0.2em] uppercase mt-1">{l}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <a href="#shop" className="btn-gold px-10 py-4 text-[10px] tracking-[0.25em] mt-2">
-          Comprar ahora — 18€
-        </a>
+  // Bloque de info reutilizable en ambos layouts
+  const info = (
+    <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-6">
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-px bg-[#c9a84c]" />
+        <p className="text-[#c9a84c] text-[10px] tracking-[0.35em] uppercase font-medium">First Drop · Primer mes</p>
+        <div className="w-8 h-px bg-[#c9a84c]" />
       </div>
+      <div className="flex items-end gap-4">
+        <span className="font-display text-[#0a0a0a] leading-none" style={{ fontSize: "clamp(5rem, 10vw, 9rem)" }}>18€</span>
+        <div className="pb-3">
+          <span className="block text-[#0a0a0a]/20 text-2xl line-through leading-none">22€</span>
+          <span className="text-[#c9a84c] text-[9px] tracking-[0.3em] uppercase">después</span>
+        </div>
+      </div>
+      <div className="flex flex-col items-center lg:items-start gap-2">
+        <p className="text-[#0a0a0a]/30 text-[9px] tracking-[0.3em] uppercase">Finaliza en</p>
+        <div className="flex items-center gap-2">
+          {[
+            { v: pad(time.days),    l: "Días" },
+            { v: pad(time.hours),   l: "Horas" },
+            { v: pad(time.minutes), l: "Min" },
+          ].map(({ v, l }, i) => (
+            <div key={l} className="flex items-center gap-2">
+              {i > 0 && <span className="text-[#c9a84c]/40 font-display text-2xl pb-2">:</span>}
+              <div className="flex flex-col items-center border border-[#0a0a0a]/10 bg-white/80 px-4 py-3 min-w-[60px]">
+                <span className="font-display text-[#0a0a0a] text-2xl leading-none tabular-nums">{v}</span>
+                <span className="text-[#0a0a0a]/30 text-[8px] tracking-[0.2em] uppercase mt-1">{l}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <a href="/shop" className="btn-gold px-10 py-4 text-[10px] tracking-[0.25em]">
+        Comprar ahora — 18€
+      </a>
+    </div>
+  );
+
+  return (
+    <div className="w-full bg-white overflow-hidden">
+
+      {/* ── MÓVIL: video de fondo + info centrada ── */}
+      <div className="relative lg:hidden py-20 px-6">
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full opacity-10"
+          style={{ objectFit: "contain", objectPosition: "center" }}>
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="relative flex flex-col items-center text-center gap-6 max-w-lg mx-auto">
+          {info}
+        </div>
+      </div>
+
+      {/* ── DESKTOP: info izquierda | video derecha ── */}
+      <div className="hidden lg:grid grid-cols-2 min-h-[560px]">
+        {/* Izquierda — info */}
+        <div className="flex items-center justify-center px-16 py-20 bg-white">
+          {info}
+        </div>
+        {/* Derecha — video */}
+        <div className="relative overflow-hidden bg-[#f5f5f5]">
+          <video autoPlay muted loop playsInline
+            className="absolute inset-0 w-full h-full"
+            style={{ objectFit: "contain", objectPosition: "center" }}>
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
     </div>
   );
 }
